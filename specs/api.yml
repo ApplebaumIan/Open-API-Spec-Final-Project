@@ -1,17 +1,17 @@
 openapi: 3.0.0
 info:
-  title: Shopping Cart API
+  title: Flight API
   description: |
-    The best shopping cart API you've ever seen.
+    The best flight checking API you've ever seen.
     If it's not the best API you've ever seen you're a liar.
   version: 0.0.1
 servers:
   - url: http://api.example.com/v1
     description: Optional server description, e.g. Main (production) server
 paths:
-  /customer_carts/{customer_id}/items:
+  /customer_cart/{customer_id}/flights:
     post:
-      summary: Add item to cart
+      summary: Add flight to cart
       parameters:
         - name: customer_id
           in: path
@@ -20,7 +20,20 @@ paths:
           schema:
             type : string
           example: 577B4ADB-FCB6-43A5-845B-918A952CB9B4
-      
+        - name: origin
+          in: path
+          required: true
+          description: Where the customer is coming from
+          schema:
+            type: string
+          example: |
+            1 Infinite Loop
+            Cupertino, CA 95014
+            United States
+        - name: start_time
+          in: path
+          required: false
+          description: Time of start of flight
       requestBody:
         required: true
         content:
@@ -71,7 +84,7 @@ paths:
                   
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: A JSON body of flight objects
           content:
             application/json:
               schema: 
