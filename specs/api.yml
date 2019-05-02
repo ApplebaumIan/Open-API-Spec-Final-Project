@@ -9,7 +9,7 @@ servers:
   - url: http://api.example.com/v1
     description: Optional server description, e.g. Main (production) server
 paths:
-  /routes/{route_UUID}:
+  /routes:
     post:
       summary:  Update Route
       parameters:
@@ -81,19 +81,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorObject'         
-  /flights/{origin, destination, start_time, end_time}:
+  /flights:
       get:
         summary: Get Flights
         description: |
           Get the status of flights provided by origin, destination, and optionally start time, and end time
         parameters:
-          - name: origin
+          - in: query
+            name: origin
             description: Where the customer is coming from.
-            in: path
-            required: true
             schema:
               type: string
+             # enum: [user, poweruser, admin]
             example: "1 Infinfite Loop Cupertino, CA 95014 United States"
+            required: true
           - name: destination
             description: Where the customer is going.
             in: path
