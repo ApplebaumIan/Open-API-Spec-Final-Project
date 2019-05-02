@@ -45,7 +45,14 @@ paths:
         required: true
         content:
           application/json:
-            example: []
+            example: [{ "oute_UUID": "577B4ADB-FCB6-43A5-845B-918A952CB9B4",
+                "origin": "1 Infinfite Loop Cupertino, CA 95014 United States",
+                "destination": "80 Nassau St Unit 4C New York, NY 10038 United States",
+                "start_time": "2017-07-21T17:32:28Z",
+                "end_time": "2017-07-21T17:32:28Z",
+                "seat_capacity": 7,
+                "price_per_Seat": 120
+              }]
             schema:
               type: array
               items:
