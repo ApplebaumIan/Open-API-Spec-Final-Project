@@ -1,24 +1,36 @@
-1. Add item to cart
-    - Method
-      - POST
-    - URL
-      - /customer_carts/{customer_id}/items
-    - Inputs: 
-      - Array of item attributes
-        - Product ID
-        - Quantity
-        - Product Customization
-      - Customer ID
-    - Responses:
-      - Cart ID
-      - Items in Cart ID
-    - Expected Result:
-      - Item is added to cart with specified customizations
-2. Remove item from cart
-    - Inputs:
-      -  Item in Cart ID
-      -  Cart ID
-    - Responses:
-      -  Success/Error
-    - Expected Result:
-      - Item is removed from cart
+Query: Show flights 
+		Method:
+      GET
+    URL:
+      /flights/{origin, destination, start_time, end_time}
+    Inputs: 
+			Origin 
+			Destination
+			Optional:
+        Start Time
+				End Time
+		Response: JSON body of flight objects
+      flight IDs
+			Origin
+			Destination
+			Start Time
+			End Time
+			Seat Capacity
+			Price per Seat
+
+Action: 
+  Update a route
+  Method:
+      POST
+  URL:
+      /routes/{route_UUID}
+	Input:  
+    Parameter: Route UUID
+		response: JSON Object with fields to be updated
+			Route UUID
+			Origin
+			Destination
+			Start Time
+			End Time
+			Seat Capacity
+			Price per Seat
