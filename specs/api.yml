@@ -9,53 +9,50 @@ servers:
   - url: http://api.example.com/v1
     description: Optional server description, e.g. Main (production) server
 paths:
-  /customer_cart/{customer_id}/flights:
+  /flights/{Route_UUID}/routes:
     post:
-      summary: Add flight to cart
+      summary:  Update Route
       parameters:
-        - name: customer_id
+        - name: Route_UUID
           in: path
           required: true
-          description: Identifier of the customer that the cart belongs to.
+          description: Identifier of the route the customer is taking.
           schema:
             type : string
           example: 577B4ADB-FCB6-43A5-845B-918A952CB9B4
-        - name: origin
+         - name: destination
+          description: Where the customer is going.
           in: path
           required: true
-          description: Where the customer is coming from
           schema:
             type: string
-          example: |
-            1 Infinite Loop
-            Cupertino, CA 95014
-            United States
+          example: "80 Nassau St Unit 4C New York, NY 10038 United States"
         - name: start_time
+          description: Time the customer is going to leave.
           in: path
           required: false
-          description: Time of start of flight
+          schema:
+            type: date-time
+          example: "2017-07-21T17:32:28Z"
+        - name: end_time
+          description: Time the customer is wants to arrive.
+          in: path
+          required: false
+          schema:
+            type: date-time
+          example: "2017-07-21T17:32:28Z"
       requestBody:
         required: true
         content:
           application/json:
             example: [
-              {
-                product_id: 14DAFFD0-7E0F-4B28-B7EF-19C6EF45704A,
-                quantity: 4,
-                customizations: {
-                    color: 'blue',
-                    sizeObj: {
-                      type: 'W',
-                      value: 10
-                    }
-                  }
-              },
-              {
-                product_id: 181BBDA8-030E-407A-8DC4-7F16A05F55FF,
-                quantity: 6,
-                customizations: {
-                    size: 4
-                  }
+              { "route UUID": "577B4ADB-FCB6-43A5-845B-918A952CB9B4"
+                "origin": "1 Infinfite Loop Cupertino, CA 95014 United States"
+                "destination": "80 Nassau St Unit 4C New York, NY 10038 United States"
+                "start_time": "2017-07-21T17:32:28Z"
+                "end_time": "2017-07-21T17:32:28Z"
+                "seat_capacity": 7
+                "price_per_Seat": 120
               }
             ]
             schema:
@@ -91,4 +88,105 @@ paths:
                 type: array
                 items: 
                   type: string
+  /flights/{origin, destination, start_time, end_time}:
+      get:
+        summary: Get Flights
+        description: |
+          Get the status of a lost baggage claim from a provided Claim ID
+        parameters:
+          - name: origin
+            description: Where the customer is coming from.
+            in: path
+            required: true
+            schema:
+              type: string
+            example: "1 Infinfite Loop Cupertino, CA 95014 United States"
+          - name: destination
+            description: Where the customer is going.
+            in: path
+            required: true
+            schema:
+              type: string
+            example: "80 Nassau St Unit 4C New York, NY 10038 United States"
+          - name: start_time
+            description: Time the customer is going to leave.
+            in: path
+            required: false
+            schema:
+              type: date-time
+            example: "2017-07-21T17:32:28Z"
+          - name: end_time
+            description: Time the customer is wants to arrive.
+            in: path
+            required: false
+            schema:
+              type: date-time
+            example: "2017-07-21T17:32:28Z"
+      responses:
+        '200':
+          description: success returns list of events with details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    claimID: 
+                      type: string
+                      example: "af04e7c0-1a57-44bc-81a4-d8b3fd0f0f56"
+                    data:
+                      type: object 
+                      example: {
+                        "customerID": "a1d5b69e-aefb-4a39-ae5c-affbe6961d60",
+                        "flightID": "9f0bbc6a-f199-4238-91f5-15215c0971fe",
+                        "baggageID": {"bag1":"5ca95c1b5eb664a11584f8cd"},
+                        "itemList": {
+                        "item1":"Black Samsonite Lugguage"
+                        },
+                        "status": "Inquery ongoing",
+                    }
+        '500': 
+          description: |
+            Returns detailed error explanation in case baggage claim was unable
+            to fulfil the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+        '400':
+          description: |
+            Returns detailed error explanation in case client submitted invalid
+            data to the baggage claim
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+                # examples syntax: https://swagger.io/docs/specification/2-0/adding-examples/                    
+                example:
+                  - claimID: af04e7c0-1a57-44bc-81a4-d8b3fd0f0f56
+                    data: {
+                      "customerID": "a1d5b69e-aefb-4a39-ae5c-affbe6961d60",
+                      "flightID": "9f0bbc6a-f199-4238-91f5-15215c0971fe",
+                      "baggageID": {"bag1":"5ca95c1b5eb664a11584f8cd"},
+                      "itemList": {
+                        "item1":"Black Samsonite Lugguage"
+                      },
+                      "status": "Inquery ongoing",
+                    }
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        errorId:
+          type: integer
+        description:
+          type: string
+        details:
+          type: string
+      example:
+        errorId: 2345
+        description: "Could not connect to database"
+        details: "Please contact sysadmin"
 
