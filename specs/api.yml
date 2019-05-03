@@ -13,7 +13,7 @@ paths:
     post:
       summary:  Update Route
       parameters:
-        - name: Route_UUID
+        - name: route_UUID
           in: path
           required: true
           description: Identifier of the route the customer is taking.
@@ -29,9 +29,24 @@ paths:
               items:
                 type: object
                 properties:
-                  route_UUID: 
+                  origin:
                     type: string
-                    example: "577B4ADB-FCB6-43A5-845B-918A952CB9B4"
+                    example: "1 Infinfite Loop Cupertino, CA 95014 United States"
+                  destination:
+                    type: string
+                    example: "80 Nassau St Unit 4C New York, NY 10038 United States"
+                  start_time:
+                    type: date-time
+                    example: "2017-07-21T17:32:28Z"
+                  end_time:
+                    type: date-time
+                    example: "2017-07-21T17:32:28Z"
+                  seat_capacity:
+                    type: int
+                    example: 7
+                  price_per_Seat:
+                    type: float
+                    example: 120.00
                   data: 
                     type: object
                     example: { 
@@ -40,7 +55,7 @@ paths:
                   "start_time": "2017-07-21T17:32:28Z",
                   "end_time": "2017-07-21T17:32:28Z",
                   "seat_capacity": 7,
-                  "price_per_Seat": 120
+                  "price_per_Seat": 120.00
                   }            
       responses:
         '200':    # status code
@@ -52,19 +67,34 @@ paths:
                 items:
                   type: object
                   properties:
-                    route_UUID: 
-                      type: string
-                      example: "577B4ADB-FCB6-43A5-845B-918A952CB9B4"
-                    data: 
-                      type: object
-                      example: { 
-                    "origin": "1 Infinfite Loop Cupertino, CA 95014 United States",
-                    "destination": "80 Nassau St Unit 4C New York, NY 10038 United States",
-                    "start_time": "2017-07-21T17:32:28Z",
-                    "end_time": "2017-07-21T17:32:28Z",
-                    "seat_capacity": 7,
-                    "price_per_Seat": 120
-                    }
+                  origin:
+                    type: string
+                    example: "1 Infinfite Loop Cupertino, CA 95014 United States"
+                  destination:
+                    type: string
+                    example: "80 Nassau St Unit 4C New York, NY 10038 United States"
+                  start_time:
+                    type: date-time
+                    example: "2017-07-21T17:32:28Z"
+                  end_time:
+                    type: date-time
+                    example: "2017-07-21T17:32:28Z"
+                  seat_capacity:
+                    type: int
+                    example: 7
+                  price_per_Seat:
+                    type: float
+                    example: 120.00
+                  example: 
+                    type: object
+                    data: { 
+                  "origin": "1 Infinfite Loop Cupertino, CA 95014 United States",
+                  "destination": "80 Nassau St Unit 4C New York, NY 10038 United States",
+                  "start_time": "2017-07-21T17:32:28Z",
+                  "end_time": "2017-07-21T17:32:28Z",
+                  "seat_capacity": 7,
+                  "price_per_Seat": 120.00
+                  }
         '500': 
             description: |
               Returns detailed error explanation that routes was unable
@@ -97,21 +127,21 @@ paths:
             required: true
           - name: destination
             description: Where the customer is going.
-            in: path
+            in: query
             required: true
             schema:
               type: string
             example: "80 Nassau St Unit 4C New York, NY 10038 United States"
           - name: start_time
             description: Time the customer is going to leave.
-            in: path
+            in: query
             required: false
             schema:
               type: date-time
             example: "2017-07-21T17:32:28Z"
           - name: end_time
             description: Time the customer is wants to arrive.
-            in: path
+            in: query
             required: false
             schema:
               type: date-time
@@ -129,15 +159,33 @@ paths:
                       flight_ID: 
                         type: string
                         example: "14DAFFD0-6KEO-4B28-B7EF-19C6AZ45704A"
-                      data: 
+                      origin:
+                        type: string
+                        example: "1 Infinfite Loop Cupertino, CA 95014 United States"
+                      destination: 
+                        type: string
+                        example: "80 Nassau St Unit 4C New York, NY 10038 United States"
+                      start_time:
+                        type: date-time
+                        example: "2017-07-21T17:32:28Z"
+                      end_time:
+                        type: date-time 
+                        example:  "2017-07-21T17:32:28Z"
+                      seat_capacity: 
+                        type: int 
+                        example: 7
+                      price_per_Seat: 
+                        type: float
+                        example: 120.00
+                      example: 
                         type: object
-                        example: { 
+                        data: { 
                       "origin": "1 Infinfite Loop Cupertino, CA 95014 United States",
                       "destination": "80 Nassau St Unit 4C New York, NY 10038 United States",
                       "start_time": "2017-07-21T17:32:28Z",
                       "end_time": "2017-07-21T17:32:28Z",
                       "seat_capacity": 7,
-                      "price_per_Seat": 120
+                      "price_per_Seat": 120.00
                       }
           '500': 
               description: |
